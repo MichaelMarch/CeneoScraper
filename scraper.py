@@ -1,11 +1,10 @@
-from cmath import sin
 import requests
 import json
 from bs4 import BeautifulSoup
 
-#101052360
+review_id = input("Please enter id of the review: ")
 
-url = "https://www.ceneo.pl/95908327#tab-reviews"
+url = f"https://www.ceneo.pl/{review_id}#tab-reviews"
 
 
 all_opinions = []
@@ -16,8 +15,6 @@ while url:
     if not response.status_code == 200:
         print(f"Status code = {response.status_code}")
         break
-    else:
-        print(f"Status code = {response.status_code}")
 
     page = BeautifulSoup(response.text, "html.parser")
     opinions = page.select("div.js_product-review")
@@ -65,5 +62,5 @@ while url:
     except TypeError:
         url = None
 
-with open("opinions/opinions.json", "w") as file:
+with open(f"opinions/opinions_{review_id}.json", "w") as file:
     json.dump(all_opinions, file, indent=4, ensure_ascii=False)
