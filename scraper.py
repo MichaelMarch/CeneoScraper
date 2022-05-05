@@ -5,7 +5,9 @@ from bs4 import BeautifulSoup
 
 #101052360
 
-url = "https://www.ceneo.pl/95908327#tab-reviews"
+product_id = input("Please enter id of the product: ")
+
+url = f"https://www.ceneo.pl/{product_id}#tab-reviews"
 
 
 all_opinions = []
@@ -16,8 +18,6 @@ while url:
     if not response.status_code == 200:
         print(f"Status code = {response.status_code}")
         break
-    else:
-        print(f"Status code = {response.status_code}")
 
     page = BeautifulSoup(response.text, "html.parser")
     opinions = page.select("div.js_product-review")
@@ -65,5 +65,5 @@ while url:
     except TypeError:
         url = None
 
-with open("opinions/opinions.json", "w") as file:
+with open(f"opinions/opinions_{product_id}.json", "w", encoding="utf-8") as file:
     json.dump(all_opinions, file, indent=4, ensure_ascii=False)
